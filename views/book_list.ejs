@@ -1,0 +1,22 @@
+<%
+  var body = `
+    <h1>${title}</h1>
+    <ul>
+  `;
+
+  if (book_list && book_list.length) {
+    book_list.forEach(book => {
+      body += `
+        <li>
+          <a href="${book.url}">${book.title}</a>
+          (${book.author.name})
+        </li>
+      `;
+    });
+  } else {
+    body += '<li>There are no books.</li>';
+  }
+
+  body += '</ul>';
+%>
+<%- include('layout', { body: body }) %>
