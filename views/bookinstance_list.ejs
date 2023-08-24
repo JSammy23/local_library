@@ -1,0 +1,27 @@
+<%
+  var body = `
+  <h1>${title}</h1>
+
+  <ul>`;
+  if (bookinstance_list && bookinstance_list.length > 0) {
+    bookinstance_list.forEach(val => {
+      body += `<li>
+                <a href="${val.url}">${val.book.title} : ${val.imprint} -`;
+      if (val.status == 'Available') {
+        body += `<span class="text-success">${val.status}</span>`;
+      } else if (val.status == 'Maintenance') {
+        body += `<span class="text-danger">${val.status}</span>`;
+      } else {
+        body += `<span class="text-warning">${val.status}</span>`;
+      }
+      if (val.status != 'Available') {
+        body += `<span> (Due: ${val.due_back})</span>`;
+      }
+      body += `</li>`;
+    });
+  } else {
+    body += `<li>There are no book copies in this library.</li>`;
+  }
+  body += `</ul>`;
+%>
+<%- include('layout', { body: body }) %>
