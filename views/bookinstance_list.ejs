@@ -15,7 +15,7 @@
         body += `<span class="text-warning">${val.status}</span>`;
       }
       if (val.status != 'Available') {
-        body += `<span> (Due: ${val.due_back})</span>`;
+        body += `<span> (Due: ${val.due_back_formatted})</span>`;
       }
       body += `</li>`;
     });
