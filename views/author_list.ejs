@@ -1,0 +1,13 @@
+<%
+var body = '<h1>' + title + '</h1><ul>';
+if (author_list && author_list.length) {
+  author_list.forEach(function(author) {
+    body += '<li><a href="' + author.url + '">' + author.name + '</a> (' + author.date_of_birth + ' - ' + author.date_of_death + ')</li>';
+  });
+} else {
+  body += '<li>There are no authors.</li>';
+}
+body += '</ul>';
+%>
+
+<%- include('layout', { body: body }) %>
