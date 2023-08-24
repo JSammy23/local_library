@@ -1,9 +1,10 @@
 var createError = require('http-errors');
 var express = require('express');
 // Set up mongoose connection
+require('dotenv').config();
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
-const mongoDB = "mongodb+srv://jordansampson23:xR03uQIuRsKqOOJ4@cluster0.u6jcvps.mongodb.net/local_library?retryWrites=true&w=majority";
+const mongoDB = process.env.MONGODB_URL;
 
 main().catch((err) => console.log(err));
 async function main() {
