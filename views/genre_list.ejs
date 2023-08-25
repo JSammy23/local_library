@@ -1,0 +1,13 @@
+<% 
+var body = '<h1>' + title + '</h1><ul>';
+if (genre_list && genre_list.length) {
+    genre_list.forEach(function(genre) {
+        body += '<li><a href="' + genre.url + '">' + genre.name + '</a></li>'
+    });
+} else {
+    body += '<li>There are no Genres.</li>';
+};
+body += '</ul>';
+%>
+
+<%- include('layout', { body: body }) %>
