@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
+var expressLayouts = require('express-ejs-layouts');
 // Set up mongoose connection
 require('dotenv').config();
 const mongoose = require("mongoose");
@@ -22,8 +23,10 @@ const catalogRouter = require('./routes/catalog')
 var app = express();
 
 // view engine setup
+app.use(expressLayouts);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+// app.set('layout', 'layout');
 
 app.use(logger('dev'));
 app.use(express.json());
