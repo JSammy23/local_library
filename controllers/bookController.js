@@ -5,6 +5,7 @@ const BookInstance = require("../models/bookinstance");
 const { body, validationResult } = require("express-validator");
 
 const asyncHandler = require("express-async-handler");
+const book = require("../models/book");
 
 exports.index = asyncHandler(async (req, res, next) => {
   // Get details of books, book instances, authors and genre counts (in parallel)
@@ -157,12 +158,48 @@ exports.book_create_post = [
 
 // Display book delete form on GET.
 exports.book_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Book delete GET");
+  const [book, bookinstances, genres] = await Promise.all([
+    Book.findById(req.params.id).populate('author').populate('genre').exec(),
+    BookInstance.find({ book: req.params.id }).exec(),
+    Genre.find().exec(),
+  ]);
+
+  if (book === null) {
+    // No results.
+    const err = new Error("Book not found");
+    err.status = 404;
+    return next(err);
+  }
+  res.render('book_delete', {
+    title: 'Delete Book',
+    book: book,
+    bookinstances: bookinstances,
+    genres: genres,
+    errors: []
+  });
 });
 
 // Handle book delete on POST.
 exports.book_delete_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Book delete POST");
+  const [book, bookinstances, genres] = await Promise.all([
+    Book.findById(req.params.id).populate('author').populate('genre').exec(),
+    BookInstance.find({ book: req.params.id }).exec(),
+    Genre.find().exec(),
+  ]);
+  if (bookinstances.length > 0) {
+    // Book has instances that need to be deleted first
+    res.render('book_delete', {
+      title: 'Delete Book',
+      book: book,
+      bookinstances: bookinstances,
+      genres: genres,
+      errors: [],
+    });
+    return;
+  } else {
+    await Book.findByIdAndRemove(req.body.bookid);
+    res.redirect('/catalog/books');
+  };
 });
 
 // Display book update form on GET.
