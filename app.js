@@ -23,6 +23,7 @@ const compression = require('compression');
 const helmet = require('helmet');
 
 var app = express();
+app.set('trust proxy', 1);
 
 // Add helmet to middleware chain
 app.use(
